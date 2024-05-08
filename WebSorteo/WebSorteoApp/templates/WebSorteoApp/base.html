@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    {% load static %} <!-- es una directiva de plantilla de Django que permite cargar archivos estáticos -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Bootstrap -->
+    <link href="{%static '..\static\css\bootstrap.min.css'%}" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- Barra de navegacion -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary rounded" aria-label="Thirteenth navbar example">
+        <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample11" aria-controls="navbarsExample11" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
+            <a class="navbar-brand col-lg-3 me-0" href="#">SorteosWeb</a>
+            <ul class="navbar-nav col-lg-6 justify-content-lg-center">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'home'%}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'participar' %}">Participar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{% url 'sortear' %}">Sortear</a>
+                </li>
+                <!-- Esto agrega un boton con un menu desplegable -->
+                <!-- <li class="nav-item dropdown"> 
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+                    <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li> -->
+            </ul>
+            <div class="d-lg-flex col-lg-3 justify-content-lg-end">
+            <button class="btn btn-primary">Button</button>
+            </div>
+        </div>
+        </div>
+    </nav>
+
+
+ {% block content %}   
+ <!--  definen un área de contenido que puede ser sobrescrita por plantillas hijas -->
+ {% endblock%}   
+
+
+
+ <footer>
+
+ </footer>
+   
+    
+
+<!-- Bootstrap -->
+<script src="{%static '../static/js/bootstrap.bundle.min.js'%}"></script>
+</body>
+</html>

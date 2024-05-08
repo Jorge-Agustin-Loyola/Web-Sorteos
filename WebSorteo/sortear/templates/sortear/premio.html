@@ -1,0 +1,18 @@
+{% extends "WebSorteoApp/base.html"%}
+{% load static %}
+{% block content%}
+
+<!--Este es el formulario para cargar los premios en la lista de premios-->
+<form action="" method="POST"   enctype="multipart/form-data" id="mi_formulario">
+    
+    {% csrf_token %}
+
+    {{f_premio}} 
+    
+    <button type="submit" class="btn btn-primary">Guardar</button>
+
+</form>
+
+
+
+{% endblock%}
