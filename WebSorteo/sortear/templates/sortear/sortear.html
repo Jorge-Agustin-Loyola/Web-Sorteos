@@ -3,6 +3,11 @@
 {% block content%}
 <h1>Sortear</h1>
 <div style="text-align: center;">
+
+    {% if "valido" in request.GET %}
+            <p>Informacion enviada correctamente</p>
+    {% endif %}
+
     <form action="" method="POST"   enctype="multipart/form-data" id="mi_formulario">
         {% csrf_token %}
         

@@ -1,6 +1,8 @@
 
 # Esta clase lo que hace es crear y modifcar la lista de premios para visualizarlos en el formulario para crear un sorteo (sortear.html)
+
 class Contador:
+
     def __init__(self, listaPremios={},contador=0):
         self.listaPremios = listaPremios
         self.contador = contador
@@ -8,13 +10,6 @@ class Contador:
     def aumentar(self, premio):
         self.contador+=1
         self.listaPremios[self.contador]= premio
-
-       
-        
-
-    
-    
-
 
     def disminuir(self,id):
         
@@ -30,7 +25,6 @@ class Contador:
         
         self.listaPremios = lista_id_nuevo
         self.contador = i-1
-    
 
     def obtenerLista(self):
         return self.listaPremios

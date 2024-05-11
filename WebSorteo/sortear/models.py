@@ -2,21 +2,23 @@ from django.db import models
 
 # Create your models here.
 
-class ImagenPremio(models.Model):
-      
-    imagen = models.ImageField(upload_to="sorteo")
-    def __str__(self):
-        return f'Imagen {self.id}'
+class Sorteo(models.Model):
+    nombre = models.CharField(max_length=25)
+    descripcion=models.TextField(max_length=500)
+    precio = models.FloatField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now_add=True) 
 
-class PremioSorteo(models.Model):
-    nombre = models.CharField(max_length=50,blank=False,default="premio")
-    descripcion= models.TextField(max_length=200, default="descripcion")   
-    imagenes = models.ForeignKey(ImagenPremio, blank=True, null=True, on_delete=models.SET_NULL)
+    class Meta():
+        verbose_name = "sorteo"
+        verbose_name_plural = "sorteos"
 
+    def __str__(self) :
+        return self.nombre
 
+        
 class CategoriaPremio(models.Model):
-    nombre = models.CharField(max_length=25)   
-    premios = models.ForeignKey(PremioSorteo,null=True, on_delete=models.SET_NULL)   
+    nombre = models.CharField(max_length=25)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
 
@@ -27,22 +29,18 @@ class CategoriaPremio(models.Model):
     def __str__(self) :
         return self.nombre
 
-class Sorteo(models.Model):
-    nombre = models.CharField(max_length=25)
-    descripcion=models.TextField(max_length=500)
-    precio = models.FloatField()
-    premios = models.ForeignKey(PremioSorteo, null=True, on_delete=models.SET_NULL)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now_add=True) 
+class PremioSorteo(models.Model):
+    nombre = models.CharField(max_length=50,blank=False,default="premio")
+    descripcion= models.TextField(max_length=200, default="descripcion")
+    categoria = models.ForeignKey(CategoriaPremio,null=True, on_delete=models.SET_NULL)  
+    sorteo = models.ForeignKey(Sorteo, null=True, on_delete=models.SET_NULL)
 
-    class Meta():
-        verbose_name = "sorteo"
-        verbose_name_plural = "sorteos"
 
-    def __str__(self) :
-        return self.nombre
-        
-
+class ImagenPremio(models.Model):      
+    imagen = models.ImageField(upload_to="sorteo")
+    premio = models.ForeignKey(PremioSorteo, blank=True, null=True, on_delete=models.SET_NULL)
+    def __str__(self):
+        return f'Imagen {self.id}'
 
 
     
