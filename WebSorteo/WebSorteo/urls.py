@@ -16,11 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from WebSorteoApp import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('WebSorteoApp.urls')),
     path('participar/', include('participar.urls')),
     path('sortear/', include('sortear.urls')),
+    path('autenticacion/', include('autenticacion.urls')),
+   
 ]

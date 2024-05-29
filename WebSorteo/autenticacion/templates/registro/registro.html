@@ -1,0 +1,13 @@
+{% extends "WebSorteoApp/base.html"%}
+{% load static %}
+{% block content%}
+{% load crispy_forms_tags %}
+
+ <h5>autenticacion</h5>
+ <form method="post" action="">
+
+   {% csrf_token%}
+    {{form | crispy}}
+    <button type="submit" class="btn btn-success">Registrate</button>
+ </form>
+{%endblock%}

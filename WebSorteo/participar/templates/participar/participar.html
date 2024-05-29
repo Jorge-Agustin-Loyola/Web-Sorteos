@@ -1,5 +1,30 @@
 {% extends "WebSorteoApp/base.html"%}
 {% load static %}
 {% block content%}
-<h1>Participar</h1>
+<h1>PParticipar</h1>
+
+<div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {%for sorteo in sorteos%}
+        <div class="col">
+            <div class="card shadow-sm">
+                <img src="../../../media/sorteo/RE54LQy_4ohfr8p.jpg" class="card-img-top">
+                <div class="card-body">
+                    <h6 class="card-title">{{sorteo.nombre}}</h6>
+                    <p class="card-text">{{sorteo.descripcion}}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-outline-secondary" href="{%url 'VerDetalle' sorteo.id %}">Ver detalles</a>
+                            <a class="btn btn-sm btn-outline-secondary" href="">Participar</a>
+                        </div>
+                        <small class="text-body-secondary">Precio Ticket: {{sorteo.precio}} </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+
+            
 {% endblock%}

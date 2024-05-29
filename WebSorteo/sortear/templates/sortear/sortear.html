@@ -1,5 +1,6 @@
 {% extends "WebSorteoApp/base.html"%}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block content%}
 <h1>Sortear</h1>
 <div style="text-align: center;">
@@ -8,10 +9,10 @@
             <p>Informacion enviada correctamente</p>
     {% endif %}
 
-    <form action="" method="POST"   enctype="multipart/form-data" id="mi_formulario">
+    <form action="" method="POST"   enctype="multipart/form-data" id="mi_formulario" style="width:40% ; margin: auto ;">
         {% csrf_token %}
         
-        {{f_sorteo}} <!-- Este es el formulario para el sorteo -->
+        {{f_sorteo | crispy}} <!-- Este es el formulario para el sorteo -->
 
         <section>
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .forms import Formulario_Sorte,Formulario_Premio
-from .premio import Contador
+from .listapremios import Contador
 from .models import Sorteo,PremioSorteo,CategoriaPremio
 # Create your views here.
 
