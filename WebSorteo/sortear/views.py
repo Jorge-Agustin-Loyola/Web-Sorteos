@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from .forms import Formulario_Sorte,Formulario_Premio
 from .listapremios import Contador
-from .models import Sorteo,PremioSorteo,CategoriaPremio
+from .models import Sorteo,PremioSorteo,CategoriaPremio,ImagenPremio
+import uuid
 # Create your views here.
 
 # Inicializamos algunas variables
@@ -56,32 +57,44 @@ def sortear(request):
 
                     # Guardamos el premio en la base de datos 
                     PremioSorteo.objects.create(nombre=x[0], categoria=categoria, descripcion=x[2], sorteo=sorteo)
+                    
+                    # guardamos imagenes en la base de datos relacionadas a los corespondientes premios
+                    premio = PremioSorteo.objects.last()
+                    for i in x[3]:
+                        ImagenPremio.objects.create(imagen=i , premio=premio)
 
 
-                    n="valido"
-                    url = reverse('sortear') + '?n={}'.format(n)
-                    return redirect(url)
+                n="guardado_con_exito"
+                url = reverse('sortear') + '?n={}'.format(n)
+                return redirect(url)
 
     # REQUEST.METHOD == GET        
     else:
         # el parametro n puede ser asignado desde la funcion agregar_premio o quitar_premio
+        
         n = request.GET.get('n')
-
+        
+        
         if n=="valido":
 
             formulario_sorteo = Formulario_Sorte(initial=valores_borrador)
-
+            
+        elif n=="guardado_con_exito":
+           
+           return render(request,"sortear/sortear.html", {'guardado':True})
+            
         else:
 
             formulario_sorteo = Formulario_Sorte()
 
     lista_premios = listaDePremios.obtenerLista()
-
-    return render(request,"sortear/sortear.html", {'f_sorteo': formulario_sorteo,'lista_premios': lista_premios})
+   
+    return render(request,"sortear/sortear.html", {'f_sorteo': formulario_sorteo,'lista_premios': lista_premios, 'guardado':False})
     
     #https://www.pudn.com/Download/item/id/1694413197137756.html para subir muchas imagens
 
 
+# carga el fomulario para agregar los premios del sorteo
 
 def agregar_premio(request):
     formulario_premio = Formulario_Premio()
@@ -89,29 +102,42 @@ def agregar_premio(request):
     # Con post recupero los datos el formulario agregar premio y los agrego a la lista de premios 
 
     if request.method == 'POST':
-        formulario_premio = Formulario_Premio(data=request.POST)
+        formulario_premio = Formulario_Premio(request.POST, request.FILES)
+        print(request.FILES)
         if formulario_premio.is_valid():
             nombre = request.POST.get('nombre_premio')
             categoria = request.POST.get("categorias_premio")
             descripcion = request.POST.get('descripcion_premio')
+            images=request.FILES.getlist('imagen_premio')
+            imagenes = []
+            for image in images:
+                    # Obtener el nombre original del archivo
+                original_filename = image.name
+                # Generar un nuevo nombre de archivo con un UUID aleatorio
+                unique_filename = str(uuid.uuid4()) + "_" + original_filename
+                # Asignar el nuevo nombre al archivo
+                image.name = unique_filename
+                imagenes.append(image.name)
 
-        premio = {
-            "nombre": nombre,
-            "categoria": categoria,
-            "descripcion": descripcion,
-        }
+            premio = {
+                "nombre": nombre,
+                "categoria": categoria,
+                "descripcion": descripcion,
+                "imagenes" : imagenes
+            }
 
-        listaDePremios.aumentar(premio)
-
-        # redirijo una a sortear con un parametro n = valido para trabajar con condicionales en la vista sortear
-        n="valido"
-        url = reverse('sortear') + '?n={}'.format(n)
-        return redirect(url)
-
+            listaDePremios.aumentar(premio)
+            print("AUMENTO PREMIO")
+            print(imagenes)
+            # redirijo una a sortear con un parametro n = valido para trabajar con condicionales en la vista sortear
+            n="valido"
+            url = reverse('sortear') + '?n={}'.format(n)
+            return redirect(url)
+    
     return render(request, "sortear/premio.html", {"f_premio":formulario_premio})
 
 
-
+#Esta funcion quita el premio de la lista de premios 
 def quitar_premio(request,id):
 
     # elmino un premio de la lista recibendo como parametro el id correspondiente    

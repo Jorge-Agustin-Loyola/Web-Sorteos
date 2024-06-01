@@ -5,64 +5,70 @@
 <h1>Sortear</h1>
 <div style="text-align: center;">
 
-    {% if "valido" in request.GET %}
-            <p>Informacion enviada correctamente</p>
+    {% if guardado  %}
+           
+        <p>Informacion enviada correctamente</p>
+    
+    {% else %}
+        {% if user.is_authenticated %}
+            <form action="" method="POST"   enctype="multipart/form-data" id="mi_formulario" style="width:40% ; margin: auto ;">
+                {% csrf_token %}
+                
+                {{f_sorteo | crispy}} <!-- Este es el formulario para el sorteo -->
+
+                <section>
+
+                    <!--Ciclo para recorre la lista de premios-->
+                    {%for id_premio, premio in lista_premios.items%}
+                        
+                        <div class = "card" style="width: 100%; margin: 5px 5px;">
+                            
+                            <h1>PREMIO {{id_premio}}</h1>
+            
+                            {%for key,value in premio.items%}
+            
+                                <div class="card-body" style="text-align: center;">
+                                    
+                                    <p class="card-text">{{key}}: {{value}}</p>
+            
+                                </div>
+            
+                                
+            
+                            {%endfor%}
+            
+                            <!--BOTON QUITAR PREMIO-->
+                            <div class="card-footer text-center">
+            
+                                <!-- <button type="submit" name="btn_quitarPremio" class="btn btn-secondary" id="{{id_premio}}">Quitar Premio</button> -->
+                                <a href="{%url 'quitarPremio' id_premio%}" class="btn btn-secondary">Quitar Premio</a>
+            
+                            </div>
+            
+                        </div>
+                                        
+                    {%endfor%}
+                    
+                        
+            
+                </section>
+                <br>
+                <br>
+                <!--BOTON AGREGAR PREMIO-->
+                <!-- <a href="{%url 'agregarPremio' %}" class="btn btn-primary" >Agregar Premio</a><br/> -->
+                <button type="submit" name="btn_agregarPremio" class="btn btn-secondary">Agregar Premio</button>
+                <br>
+                <br>
+                <!--BOTON ENVIAR-->
+                
+                <button type="submit" name="btn_enviar" class="btn btn-primary">Enviar</button>
+            </form>
+        {%else%}
+            <h1>Debe registrarse o iniciar sesion</h1>
+        {% endif %}
     {% endif %}
 
-    <form action="" method="POST"   enctype="multipart/form-data" id="mi_formulario" style="width:40% ; margin: auto ;">
-        {% csrf_token %}
-        
-        {{f_sorteo | crispy}} <!-- Este es el formulario para el sorteo -->
-
-        <section>
-
-            <!--Ciclo para recorre la lista de premios-->
-            {%for id_premio, premio in lista_premios.items%}
-                
-                <div class = "card" style="width: 100%; margin: 5px 5px;">
-                    
-                    <h1>PREMIO {{id_premio}}</h1>
     
-                    {%for key,value in premio.items%}
-    
-                        <div class="card-body" style="text-align: center;">
-                            
-                            <p class="card-text">{{key}}: {{value}}</p>
-    
-                        </div>
-    
-                        
-    
-                    {%endfor%}
-    
-                    <!--BOTON QUITAR PREMIO-->
-                    <div class="card-footer text-center">
-    
-                        <!-- <button type="submit" name="btn_quitarPremio" class="btn btn-secondary" id="{{id_premio}}">Quitar Premio</button> -->
-                        <a href="{%url 'quitarPremio' id_premio%}" class="btn btn-secondary">Quitar Premio</a>
-    
-                    </div>
-    
-                </div>
-                                
-            {%endfor%}
-            
-                
-    
-        </section>
-    
-        <!--BOTON AGREGAR PREMIO-->
-        <!-- <a href="{%url 'agregarPremio' %}" class="btn btn-primary" >Agregar Premio</a><br/> -->
-        <button type="submit" name="btn_agregarPremio" class="btn btn-secondary">Agregar Premio</button>
-    
-        <!--BOTON ENVIAR-->
-        
-        <button type="submit" name="btn_enviar" class="btn btn-primary">Enviar</button>
-    </form>
-   
-    
-
-    <p>{{request.POST}}</p>
 
 </div>
 
